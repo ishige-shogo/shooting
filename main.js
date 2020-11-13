@@ -29,6 +29,22 @@ let star=[];
 let spriteImage = new Image();
 spriteImage.src = "sprite.png";
 
+class Sprite
+{
+  constructor(x,y,w,h)
+  {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+  }
+}
+
+let sprite =[
+  new Sprite(0,0,10,26),
+  new Sprite(0,0,10,26),
+]
+
 function drawSprite(snum, x, y)
 {
     let sx = sprite[snum].x;
@@ -36,11 +52,14 @@ function drawSprite(snum, x, y)
     let sw = sprite[snum].w;
     let sh = sprite[snum].h;
 
-    let px = x>>8;
-    let py = y>>8;
+    let px = (x>>8) - sw/2;
+    let py = (y>>8) - sh/2;
 
-    vcon.drawImage( spriteImage, sx,sy,sw,sh,
-      x,y,sw,sh)
+    if( px+sw/2 <camera_x || px-sw/2>=camera_x+SCREEN_W
+      || py+sh/2 <camera_y || py-sh/2>=camera_y+SCREEN_H) return;
+
+
+    vcon.drawImage( spriteImage, sx,sy,sw,sh,px,py,sw,sh)
 }
 
 function rand(min,max)
@@ -83,11 +102,10 @@ class Star{
 
 
 function gameInit()
-for (let i=0; i<STAR_MAX;i++)star[i]=new Star();
-
-
-
-setInterval(gameLoop , GAME_SPEED);
+{
+  for (let i=0; i<STAR_MAX;i++)star[i]=new Star();
+  setInterval(gameLoop , GAME_SPEED);
+}
 
 function gameLoop()
 {
@@ -96,6 +114,8 @@ function gameLoop()
   vcon.fillStyle="black";
   vcon.fillRect(0,0,SCREEN_W,SCREEN_H)
   for (let i=0; i<STAR_MAX;i++)star[i].draw();
+
+  drawSprite(1, 0<<8, 0<<8);
 
   con.drawImage(vcan, camera_x, camera_y, SCREEN_W, SCREEN_H,
     0,0,CANVAS_W,CANVAS_H);
