@@ -26,6 +26,16 @@ let camera_y =0;
 
 let star=[];
 
+class Jiki
+{
+  constructor()
+  {
+    this.x = 0;
+    this.y = 0;
+  }
+}
+let jiki = new Jiki();
+
 let spriteImage = new Image();
 spriteImage.src = "sprite.png";
 
