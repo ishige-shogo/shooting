@@ -26,12 +26,25 @@ let camera_y =0;
 
 let star=[];
 
+let key =[];
+
+document.onkeydown = function(e)
+{
+  key[e.keyCode] = true;
+}
+
+document.onkeyup = function(e)
+{
+  key[e.keyCode] = false;
+}
+
 class Me
 {
   constructor()
   {
     this.x = (FIELD_W/2)<<8;
     this.y = (FIELD_H/2)<<8;
+    this.speed=512;
   }
   draw()
   {
@@ -39,7 +52,10 @@ class Me
   }
   update()
   {
-
+    if(key[37])this.x-=this.speed;
+    if(key[38])this.y-=this.speed;
+    if(key[39])this.x+=this.speed;
+    if(key[40])this.y+=this.speed;
   }
 }
 let me = new Me();
