@@ -26,15 +26,23 @@ let camera_y =0;
 
 let star=[];
 
-class Jiki
+class Me
 {
   constructor()
   {
-    this.x = 0;
-    this.y = 0;
+    this.x = (FIELD_W/2)<<8;
+    this.y = (FIELD_H/2)<<8;
+  }
+  draw()
+  {
+    drawSprite(1, this.x, this.y);
+  }
+  update()
+  {
+
   }
 }
-let jiki = new Jiki();
+let me = new Me();
 
 let spriteImage = new Image();
 spriteImage.src = "sprite.png";
@@ -48,6 +56,8 @@ class Sprite
     this.w = w;
     this.h = h;
   }
+
+  
 }
 
 let sprite =[
@@ -120,12 +130,12 @@ function gameInit()
 function gameLoop()
 {
   for (let i=0; i<STAR_MAX;i++)star[i].update();
+  me.update();
 
   vcon.fillStyle="black";
   vcon.fillRect(0,0,SCREEN_W,SCREEN_H)
   for (let i=0; i<STAR_MAX;i++)star[i].draw();
-
-  drawSprite(1, 0<<8, 0<<8);
+  me.draw();
 
   con.drawImage(vcan, camera_x, camera_y, SCREEN_W, SCREEN_H,
     0,0,CANVAS_W,CANVAS_H);
