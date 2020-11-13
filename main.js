@@ -1,3 +1,10 @@
+const DEBUG = true;
+
+let drawCount=0;
+let fps=0;
+let lastTime=Date.now();
+
+
 const GAME_SPEED = 1000/60;
 
 const SCREEN_W = 180; 
@@ -38,6 +45,36 @@ document.onkeyup = function(e)
   key[e.keyCode] = false;
 }
 
+
+class Ball
+{
+    constructor(x,y,vx,vy)
+    {
+      this.sn   = 2
+      this.x    = x;
+      this.y    = y;
+      this.vx   = vx;
+      this.vy   = vy;
+      this.kill = false;
+    }
+    update()
+    {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if( this.x<0 || this.x>FIELD_W<<8 || this.y<0 || this.y>FIELD_H<<8 )this.kill = true;
+      {
+
+      }
+    }
+    draw()
+    {
+      drawSprite(this.sn, this.x, this.y);
+    }
+}
+
+let ball=[]
+
 class Me
 {
   constructor()
@@ -45,6 +82,8 @@ class Me
     this.x = (FIELD_W/2)<<8;
     this.y = (FIELD_H/2)<<8;
     this.speed=512;
+    this.reload = 0;
+    this.reload2 = 0;
   }
   draw()
   {
@@ -52,10 +91,35 @@ class Me
   }
   update()
   {
-    if(key[37])this.x-=this.speed;
-    if(key[38])this.y-=this.speed;
-    if(key[39])this.x+=this.speed;
-    if(key[40])this.y+=this.speed;
+    if(key[32] && this.reload==0)
+      { 
+        ball.push(new Ball(this.x, this.y,0,-2000));
+        this.reload=4;
+        if(++this.reload2 ==4)
+        {
+          this.reload=20;
+          this.reload2=0;
+        }
+      }
+
+    if(this.reload>0) this.reload--;
+
+    if(key[37] && this.x>this.speed)
+      {
+        this.x-=this.speed;
+      }
+    if(key[38] && this.y>this.speed)
+    {
+      this.y-=this.speed;
+    }
+    if(key[39] && this.x<=(FIELD_W<<8)-this.speed)
+    {
+      this.x+=this.speed;
+    }
+    if(key[40] && this.y<=(FIELD_H<<8)-this.speed)
+    {
+      this.y+=this.speed;
+    }
   }
 }
 let me = new Me();
@@ -79,6 +143,9 @@ class Sprite
 let sprite =[
   new Sprite(0,0,10,26),
   new Sprite(0,0,10,26),
+  
+  new Sprite(2,2,4,4),
+  new Sprite(2,2,6,6),
 ]
 
 function drawSprite(snum, x, y)
@@ -146,15 +213,42 @@ function gameInit()
 function gameLoop()
 {
   for (let i=0; i<STAR_MAX;i++)star[i].update();
-  me.update();
+  for (let i=ball.length-1;i>=0;i--)
+  {
+    ball[i].update();
+    if (ball[i].kill)ball.splice(i,1);
+
+  }
+    me.update();
 
   vcon.fillStyle="black";
-  vcon.fillRect(0,0,SCREEN_W,SCREEN_H)
+  vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H)
   for (let i=0; i<STAR_MAX;i++)star[i].draw();
+  for (let i=0; i<ball.length;i++)ball[i].draw();
   me.draw();
+
+
+
+  camera_x = (me.x>>8)/FIELD_W * (FIELD_W-SCREEN_W);
+  camera_y = (me.y>>8)/FIELD_H * (FIELD_H-SCREEN_H);
 
   con.drawImage(vcan, camera_x, camera_y, SCREEN_W, SCREEN_H,
     0,0,CANVAS_W,CANVAS_H);
+
+    if(DEBUG)
+    {
+      drawCount++;
+      if(lastTime +1000 <=Date.now())
+      {
+        fps=drawCount;
+        drawCount=0;
+        lastTime=Date.now();
+      }
+      con.font="20px 'Impact'";
+      con.fillStyle ="white";
+      con.fillText("FPS:" + fps,20,20);
+      con.fillText("Ball:" + ball.length,20,40);
+    }
 }
 
 window.onload=function()
