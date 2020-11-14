@@ -53,8 +53,10 @@ let key =[];
 
 //object
 let enemy = [];
+let enemy_ball =[];
 let ball=[];
 let me = new Me();
+
 // enemy[0]=new Enemy(3, 200<<8, 200<<8, 0, 0);
 
 //file_loading
@@ -92,6 +94,7 @@ function updateAll()
   updateObj(star);
   updateObj(enemy);
   updateObj(ball);
+  updateObj(enemy_ball);
     me.update();
 }
 
@@ -103,6 +106,7 @@ function drawAll()
   drawObj(star);
   drawObj(ball);
   me.draw();
+  drawObj(enemy_ball);
   drawObj(enemy);
 
 
@@ -129,6 +133,7 @@ function putInfo()
       con.fillText("FPS:" + fps,20,20);
       con.fillText("Ball:" + ball.length,20,40);
       con.fillText("Enemy:" + enemy.length,20,60);
+      con.fillText("Enemy_ball:" + enemy_ball.length,20,80);
     }
 }
 
@@ -136,7 +141,7 @@ function putInfo()
 
 function gameLoop()
 {
-  if(rand(0,10)==1)
+  if(rand(0,30)==1)
     enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
 
   updateAll();
