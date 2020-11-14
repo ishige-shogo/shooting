@@ -103,7 +103,7 @@ class Ball extends Char
 {
   constructor(x,y,vx,vy)
   {
-    super(5,x,y,vx,vy);
+    super(2,x,y,vx,vy);
   }
   update()
   {
@@ -207,8 +207,8 @@ function drawSprite(snum, x, y)
     let px = (x>>8) - sw/2;
     let py = (y>>8) - sh/2;
 
-    if( px+sw/2 <camera_x || px-sw/2>=camera_x+SCREEN_W
-      || py+sh/2 <camera_y || py-sh/2>=camera_y+SCREEN_H) return;
+    if( px+sw <camera_x || px>=camera_x+SCREEN_W
+      || py+sh <camera_y || py>=camera_y+SCREEN_H) return;
 
 
     vcon.drawImage( spriteImage, sx,sy,sw,sh,px,py,sw,sh)
@@ -259,26 +259,40 @@ function gameInit()
   setInterval(gameLoop , GAME_SPEED);
 }
 
-function gameLoop()
-{
-  for (let i=0; i<STAR_MAX;i++)star[i].update();
-  for (let i=ball.length-1;i>=0;i--)
-  {
-    ball[i].update();
-    if (ball[i].kill)ball.splice(i,1);
-  }
-  for (let i=enemy.length-1;i>=0;i--)
-  {
-    enemy[i].update();
-    if (enemy[i].kill)enemy.splice(i,1);
-  }
-    me.update();
+//update
 
+function updateObj(obj)
+{
+  for (let i=obj.length-1;i>=0;i--)
+  {
+    obj[i].update();
+    if (obj[i].kill)obj.splice(i,1);
+  }
+}
+
+//draw
+function drawObj(obj)
+{
+  for (let i=0; i<obj.length;i++)obj[i].draw();
+}
+
+//movement
+function updateAll()
+{
+  updateObj(star);
+  updateObj(enemy);
+  updateObj(ball);
+    me.update();
+}
+
+function drawAll()
+{
   vcon.fillStyle="black";
   vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H)
-  for (let i=0; i<STAR_MAX;i++)star[i].draw();
-  for (let i=0; i<ball.length;i++)ball[i].draw();
-  for (let i=0; i<enemy.length;i++)enemy[i].draw();
+  
+  drawObj(star);
+  drawObj(ball);
+  drawObj(enemy);
   me.draw();
 
 
@@ -288,8 +302,11 @@ function gameLoop()
 
   con.drawImage(vcan, camera_x, camera_y, SCREEN_W, SCREEN_H,
     0,0,CANVAS_W,CANVAS_H);
+}
 
-    if(DEBUG)
+function putInfo()
+{
+  if(DEBUG)
     {
       drawCount++;
       if(lastTime +1000 <=Date.now())
@@ -304,6 +321,15 @@ function gameLoop()
       con.fillText("Ball:" + ball.length,20,40);
       con.fillText("Enemy:" + enemy.length,20,60);
     }
+}
+
+
+
+function gameLoop()
+{
+  updateAll();
+  drawAll();
+  putInfo();
 }
 
 window.onload=function()
