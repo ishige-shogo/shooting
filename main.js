@@ -46,11 +46,13 @@ document.onkeyup = function(e)
 }
 
 
-class Ball
+//base_class
+
+class Char
 {
-    constructor(x,y,vx,vy)
+  constructor(snum,x,y,vx,vy)
     {
-      this.sn   = 2
+      this.sn   = snum;
       this.x    = x;
       this.y    = y;
       this.vx   = vx;
@@ -73,7 +75,49 @@ class Ball
     }
 }
 
+//enemy_class
+
+class Enemy extends Char
+{
+    constructor(snum,x,y,vx,vy)
+    {
+      super(snum,x,y,vx,vy);
+    }
+    update()
+    {
+      super.update();
+    }
+    draw()
+    {
+      super.draw();
+    }
+}
+
+let enemy = [
+  new Enemy(3,200<<8,200<<8,0,0)
+];
+
+//ball_class
+
+class Ball extends Char
+{
+  constructor(x,y,vx,vy)
+  {
+    super(5,x,y,vx,vy);
+  }
+  update()
+  {
+    super.update();
+  }
+  draw()
+  {
+    super.draw();
+  }
+}
+
 let ball=[]
+
+
 
 class Me
 {
@@ -125,7 +169,7 @@ class Me
 let me = new Me();
 
 let spriteImage = new Image();
-spriteImage.src = "sprite.png";
+spriteImage.src = "sprite2.png";
 
 class Sprite
 {
@@ -141,11 +185,16 @@ class Sprite
 }
 
 let sprite =[
-  new Sprite(0,0,10,26),
-  new Sprite(0,0,10,26),
+  new Sprite(10,4,8,26), //me
+  new Sprite(10,4,8,26), //me
   
-  new Sprite(2,2,4,4),
-  new Sprite(2,2,6,6),
+  new Sprite(10,22,5,5), //ball
+
+  new Sprite(39,12,86,60), //enemy
+
+  new Sprite(9,36,10,10), //enemy_ball
+
+  new Sprite(152,19,130,130), //explosion
 ]
 
 function drawSprite(snum, x, y)
@@ -217,7 +266,11 @@ function gameLoop()
   {
     ball[i].update();
     if (ball[i].kill)ball.splice(i,1);
-
+  }
+  for (let i=enemy.length-1;i>=0;i--)
+  {
+    enemy[i].update();
+    if (enemy[i].kill)enemy.splice(i,1);
   }
     me.update();
 
@@ -225,6 +278,7 @@ function gameLoop()
   vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H)
   for (let i=0; i<STAR_MAX;i++)star[i].draw();
   for (let i=0; i<ball.length;i++)ball[i].draw();
+  for (let i=0; i<enemy.length;i++)enemy[i].draw();
   me.draw();
 
 
@@ -248,6 +302,7 @@ function gameLoop()
       con.fillStyle ="white";
       con.fillText("FPS:" + fps,20,20);
       con.fillText("Ball:" + ball.length,20,40);
+      con.fillText("Enemy:" + enemy.length,20,60);
     }
 }
 
