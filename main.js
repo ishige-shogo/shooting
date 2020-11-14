@@ -4,24 +4,39 @@ let drawCount=0;
 let fps=0;
 let lastTime=Date.now();
 
+const SMOOTHING = false;
 
+
+//game_speed
 const GAME_SPEED = 1000/60;
 
+//screen_size
 const SCREEN_W = 180; 
 const SCREEN_H = 320;
 
+//canvas_size
 const CANVAS_W = SCREEN_W *2;
 const CANVAS_H = SCREEN_H *2;
 
+//field_size
 const FIELD_W = SCREEN_W *2;
 const FIELD_H = SCREEN_H *2;
 
+//amount_star
 const STAR_MAX =300;
 
+
+//canvas
 let can = document.getElementById("can");
 let con = can.getContext("2d");
 can.width = CANVAS_W;
 can.height = CANVAS_H;
+
+con.mozimageSmoothingEnabled = SMOOTHING;
+con.webkitimageSmoothingEnabled = SMOOTHING;
+con.msimageSmoothingEnabled = SMOOTHING;
+con.imageSmoothingEnabled = SMOOTHING;
+
 
 let vcan = document.createElement("canvas");
 let vcon = vcan.getContext("2d");
@@ -33,234 +48,29 @@ let camera_y =0;
 
 let star=[];
 
+//key
 let key =[];
 
-document.onkeydown = function(e)
-{
-  key[e.keyCode] = true;
-}
-
-document.onkeyup = function(e)
-{
-  key[e.keyCode] = false;
-}
-
-
-//base_class
-
-class Char
-{
-  constructor(snum,x,y,vx,vy)
-    {
-      this.sn   = snum;
-      this.x    = x;
-      this.y    = y;
-      this.vx   = vx;
-      this.vy   = vy;
-      this.kill = false;
-    }
-    update()
-    {
-      this.x += this.vx;
-      this.y += this.vy;
-
-      if( this.x<0 || this.x>FIELD_W<<8 || this.y<0 || this.y>FIELD_H<<8 )this.kill = true;
-      {
-
-      }
-    }
-    draw()
-    {
-      drawSprite(this.sn, this.x, this.y);
-    }
-}
-
-//enemy_class
-
-class Enemy extends Char
-{
-    constructor(snum,x,y,vx,vy)
-    {
-      super(snum,x,y,vx,vy);
-    }
-    update()
-    {
-      super.update();
-    }
-    draw()
-    {
-      super.draw();
-    }
-}
-
-let enemy = [
-  new Enemy(3,200<<8,200<<8,0,0)
-];
-
-//ball_class
-
-class Ball extends Char
-{
-  constructor(x,y,vx,vy)
-  {
-    super(2,x,y,vx,vy);
-  }
-  update()
-  {
-    super.update();
-  }
-  draw()
-  {
-    super.draw();
-  }
-}
-
-let ball=[]
-
-
-
-class Me
-{
-  constructor()
-  {
-    this.x = (FIELD_W/2)<<8;
-    this.y = (FIELD_H/2)<<8;
-    this.speed=512;
-    this.reload = 0;
-    this.reload2 = 0;
-  }
-  draw()
-  {
-    drawSprite(1, this.x, this.y);
-  }
-  update()
-  {
-    if(key[32] && this.reload==0)
-      { 
-        ball.push(new Ball(this.x, this.y,0,-2000));
-        this.reload=4;
-        if(++this.reload2 ==4)
-        {
-          this.reload=20;
-          this.reload2=0;
-        }
-      }
-
-    if(this.reload>0) this.reload--;
-
-    if(key[37] && this.x>this.speed)
-      {
-        this.x-=this.speed;
-      }
-    if(key[38] && this.y>this.speed)
-    {
-      this.y-=this.speed;
-    }
-    if(key[39] && this.x<=(FIELD_W<<8)-this.speed)
-    {
-      this.x+=this.speed;
-    }
-    if(key[40] && this.y<=(FIELD_H<<8)-this.speed)
-    {
-      this.y+=this.speed;
-    }
-  }
-}
+//object
+let enemy = [];
+let ball=[];
 let me = new Me();
+// enemy[0]=new Enemy(3, 200<<8, 200<<8, 0, 0);
 
+//file_loading
 let spriteImage = new Image();
 spriteImage.src = "sprite2.png";
 
-class Sprite
-{
-  constructor(x,y,w,h)
-  {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-  }
 
-  
-}
-
-let sprite =[
-  new Sprite(10,4,8,26), //me
-  new Sprite(10,4,8,26), //me
-  
-  new Sprite(10,22,5,5), //ball
-
-  new Sprite(39,12,86,60), //enemy
-
-  new Sprite(9,36,10,10), //enemy_ball
-
-  new Sprite(152,19,130,130), //explosion
-]
-
-function drawSprite(snum, x, y)
-{
-    let sx = sprite[snum].x;
-    let sy = sprite[snum].y;
-    let sw = sprite[snum].w;
-    let sh = sprite[snum].h;
-
-    let px = (x>>8) - sw/2;
-    let py = (y>>8) - sh/2;
-
-    if( px+sw <camera_x || px>=camera_x+SCREEN_W
-      || py+sh <camera_y || py>=camera_y+SCREEN_H) return;
-
-
-    vcon.drawImage( spriteImage, sx,sy,sw,sh,px,py,sw,sh)
-}
-
-function rand(min,max)
-{
-    return Math.floor(Math.random()*(max-min+1)) + min;
-}
-
-class Star{
-
-    constructor()
-    {
-       this.x = rand(0, FIELD_W)<<8;
-       this.y = rand(0, FIELD_H)<<8;
-       this.vx = 0;
-       this.vy = rand(30,200);
-       this.sz = rand(1,2);
-    }
-
-    draw()
-    {   
-        let x=this.x>>8;
-        let y=this.y>>8;
-        if( x<camera_x || x>=camera_x+SCREEN_W
-         || y<camera_y || y>=camera_y+SCREEN_H) return;
-        vcon.fillStyle=rand(0,2)!=0?"66f":"#8af";
-        vcon.fillRect(x,y, this.sz,this.sz);
-    }
-
-    update()
-    {
-      this.x += this.vx;
-      this.y += this.vy;
-      if(this.y>FIELD_H<<8)
-      {
-          this.y=0;
-          this.x=rand(0, FIELD_W)<<8;
-      }
-    }
-}
-
-
+//game_start
 function gameInit()
 {
   for (let i=0; i<STAR_MAX;i++)star[i]=new Star();
   setInterval(gameLoop , GAME_SPEED);
 }
 
-//update
 
+//update
 function updateObj(obj)
 {
   for (let i=obj.length-1;i>=0;i--)
@@ -292,9 +102,8 @@ function drawAll()
   
   drawObj(star);
   drawObj(ball);
-  drawObj(enemy);
   me.draw();
-
+  drawObj(enemy);
 
 
   camera_x = (me.x>>8)/FIELD_W * (FIELD_W-SCREEN_W);
@@ -327,6 +136,9 @@ function putInfo()
 
 function gameLoop()
 {
+  if(rand(0,10)==1)
+    enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+
   updateAll();
   drawAll();
   putInfo();
