@@ -14,6 +14,9 @@ class Enemy extends Char
     {
       super(snum,x,y,vx,vy);
       this.flag = false;
+      // this.w = 20;
+      // this.h = 20;
+      this.r = 10;
     }
     update()
     {

@@ -7,10 +7,30 @@ class Ball extends Char
   constructor(x,y,vx,vy)
   {
     super(2,x,y,vx,vy);
+    // this.w = 4;
+    // this.h = 6;
+    this.r =4;
   }
   update()
   {
     super.update();
+    
+
+    for (let i=0; i<enemy.length ;i++)
+    {
+      if (!enemy[i].kill)
+      {
+        if(checkHit(
+          this.x, this.y, this.r,
+          enemy[i].x, enemy[i].y, enemy[i].r
+        ))
+        {
+          enemy[i].kill=true;
+          this.kill=true;
+          break;
+        }
+      }
+    }
   }
   draw()
   {
