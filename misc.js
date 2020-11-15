@@ -101,6 +101,7 @@ document.onkeyup = function(e)
 
 
 
+
 function drawSprite(snum, x, y)
 {
     let sx = sprite[snum].x;
