@@ -4,6 +4,25 @@
 class Enemy_ball extends Char
 {
 
+  constructor(sn,x,y,vx,vy)
+  {
+    super(sn,x,y,vx,vy);
+    this.r = 4;
+
+  }
+  update()
+  {
+    super.update();
+    if(!me.damage && checkHit(
+      this.x, this.y, this.r,
+      me.x, me.y, me.r))
+    {
+      this.kill=true;
+      me.damage = 10;
+    }
+
+  }
+
 }
 
 //enemy_class
@@ -47,6 +66,14 @@ class Enemy extends Char
         
       }
       if(this.flag && this.vy>-800) this.vy-=30;
+
+      if(!me.damage && checkHit(
+        this.x, this.y, this.r,
+        me.x, me.y, me.r))
+      {
+        this.kill=true;
+        me.damage = 10;
+      }
     }
     draw()
     {

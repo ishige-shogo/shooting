@@ -16,6 +16,7 @@ class Char
     }
     update()
     {
+      
       this.x += this.vx;
       this.y += this.vy;
 
@@ -29,6 +30,7 @@ class Char
       drawSprite(this.sn, this.x, this.y);
     }
 }
+
 
 
 class Star{
@@ -62,6 +64,17 @@ class Star{
         this.x=rand(0, FIELD_W)<<8;
     }
   }
+}
+
+//explosion
+
+class Explosion extends Char
+{
+  // draw()
+  // {
+  //   // this.kill = true;
+  //   // return;
+  // }
 }
 
 

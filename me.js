@@ -27,6 +27,7 @@ class Ball extends Char
         {
           enemy[i].kill=true;
           this.kill=true;
+          explosion.push(new Explosion(5,enemy[i].x, enemy[i].y, enemy[i].vx>>3, enemy[i].vy>>3 ));
           break;
         }
       }
@@ -49,6 +50,8 @@ class Me
     this.speed=512;
     this.reload = 0;
     this.reload2 = 0;
+    this.r = 10;
+    this.damage = 0;
   }
   draw()
   {
@@ -56,6 +59,7 @@ class Me
   }
   update()
   {
+    if(this.damage)this.damage--;
     if(key[32] && this.reload==0)
       { 
         ball.push(new Ball(this.x, this.y,0,-2000));

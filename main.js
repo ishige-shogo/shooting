@@ -11,7 +11,7 @@ const SMOOTHING = false;
 const GAME_SPEED = 1000/60;
 
 //screen_size
-const SCREEN_W = 320; 
+const SCREEN_W = 320;
 const SCREEN_H = 320;
 
 //canvas_size
@@ -55,7 +55,9 @@ let key =[];
 let enemy = [];
 let enemy_ball =[];
 let ball=[];
+let explosion=[];
 let me = new Me();
+
 
 // enemy[0]=new Enemy(3, 200<<8, 200<<8, 0, 0);
 
@@ -95,19 +97,21 @@ function updateAll()
   updateObj(enemy);
   updateObj(ball);
   updateObj(enemy_ball);
+  updateObj(explosion);
     me.update();
 }
 
 function drawAll()
 {
-  vcon.fillStyle="black";
+  vcon.fillStyle=(me.damage)?"red":"black";
   vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H)
-  
+
   drawObj(star);
   drawObj(ball);
   me.draw();
   drawObj(enemy_ball);
   drawObj(enemy);
+  drawObj(explosion);
 
 
   camera_x = (me.x>>8)/FIELD_W * (FIELD_W-SCREEN_W);
