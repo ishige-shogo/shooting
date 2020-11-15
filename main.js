@@ -11,7 +11,7 @@ const SMOOTHING = false;
 const GAME_SPEED = 1000/60;
 
 //screen_size
-const SCREEN_W = 320;
+const SCREEN_W = 640;
 const SCREEN_H = 320;
 
 //canvas_size
@@ -36,6 +36,7 @@ con.mozimageSmoothingEnabled = SMOOTHING;
 con.webkitimageSmoothingEnabled = SMOOTHING;
 con.msimageSmoothingEnabled = SMOOTHING;
 con.imageSmoothingEnabled = SMOOTHING;
+con.font="20px 'Impact'";
 
 
 let vcan = document.createElement("canvas");
@@ -45,6 +46,9 @@ vcan.height = FIELD_H;
 
 let camera_x =0;
 let camera_y =0;
+
+let gameOver =false;
+let score = 0;
 
 let star=[];
 
@@ -98,7 +102,7 @@ function updateAll()
   updateObj(ball);
   updateObj(enemy_ball);
   updateObj(explosion);
-    me.update();
+  if(!gameOver)me.update();
 }
 
 function drawAll()
@@ -108,7 +112,7 @@ function drawAll()
 
   drawObj(star);
   drawObj(ball);
-  me.draw();
+  if(!gameOver)me.draw();
   drawObj(enemy_ball);
   drawObj(enemy);
   drawObj(explosion);
@@ -123,6 +127,24 @@ function drawAll()
 
 function putInfo()
 {
+  
+  con.fillStyle ="white";
+
+  if(gameOver)
+  {
+
+  let s="GAME OVER";
+  let w=con.measureText(s).width;
+  let x=CANVAS_W/2 - w/2;
+  let y=CANVAS_H/2 -20;
+  con.fillText(s,x,y);
+  s="Push 'R' key to restart !";
+  w=con.measureText(s).width;
+  x=CANVAS_W/2 - w/2;
+  y=CANVAS_H/2 -20+20;
+  con.fillText(s,x,y);
+  }
+
   if(DEBUG)
     {
       drawCount++;
@@ -132,12 +154,14 @@ function putInfo()
         drawCount=0;
         lastTime=Date.now();
       }
-      con.font="20px 'Impact'";
-      con.fillStyle ="white";
+      
       con.fillText("FPS:" + fps,20,20);
       con.fillText("Ball:" + ball.length,20,40);
       con.fillText("Enemy:" + enemy.length,20,60);
       con.fillText("Enemy_ball:" + enemy_ball.length,20,80);
+      con.fillText("X:" + (me.x>>8),20,100);
+      con.fillText("Y:" + (me.y>>8),20,120);
+      con.fillText("HP:" + me.hp,20,140);
     }
 }
 

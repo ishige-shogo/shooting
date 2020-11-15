@@ -13,12 +13,19 @@ class Enemy_ball extends Char
   update()
   {
     super.update();
-    if(!me.damage && checkHit(
+    if(!gameOver && !me.damage && checkHit(
       this.x, this.y, this.r,
       me.x, me.y, me.r))
     {
       this.kill=true;
-      me.damage = 10;
+      if((me.hp -= 25)<=0)
+      {
+        gameOver=true;
+      }
+      else
+      {
+        me.damage = 10;
+      }
     }
 
   }
@@ -62,17 +69,28 @@ class Enemy extends Char
         dx = Math.cos(angle) * 1000;
         dy = Math.sin(angle) * 1000;
 
+        if (gameOver)return;
+        {
         enemy_ball.push(new Enemy_ball(4,this.x,this.y,dx,dy));
+        }
         
       }
       if(this.flag && this.vy>-800) this.vy-=30;
 
-      if(!me.damage && checkHit(
+
+      if(!gameOver && !me.damage && checkHit(
         this.x, this.y, this.r,
         me.x, me.y, me.r))
       {
         this.kill=true;
-        me.damage = 10;
+        if((me.hp -= 25)<=0)
+        {
+          gameOver=true;
+        }
+        else
+        {
+          me.damage = 10;
+        }
       }
     }
     draw()

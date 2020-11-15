@@ -83,6 +83,13 @@ class Explosion extends Char
 document.onkeydown = function(e)
 {
   key[e.keyCode] = true;
+  if(gameOver && e.keyCode==82)
+  {
+    delete me;
+    me = new Me();
+    gameOver = false;
+    window.location.reload();
+  }
 }
 
 document.onkeyup = function(e)

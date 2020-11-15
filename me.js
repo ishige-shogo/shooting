@@ -52,6 +52,8 @@ class Me
     this.reload2 = 0;
     this.r = 10;
     this.damage = 0;
+    this.mhp=100;
+    this.hp= this.mhp;
   }
   draw()
   {
