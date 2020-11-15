@@ -108,6 +108,8 @@ function updateAll()
 function drawAll()
 {
   vcon.fillStyle=(me.damage)?"red":"black";
+  if (me.hp == 25)vcon.fillStyle="#cd5c5c";
+  if (me.hp==0)vcon.fillStyle="red";
   vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H)
 
   drawObj(star);
@@ -162,15 +164,41 @@ function putInfo()
       con.fillText("X:" + (me.x>>8),20,100);
       con.fillText("Y:" + (me.y>>8),20,120);
       con.fillText("HP:" + me.hp,20,140);
+      con.fillText("gameCount:" + (Math.round(gameCount/60)),20,160);
+
     }
 }
 
-
+let gameCount=0;
 
 function gameLoop()
 {
-  if(rand(0,30)==1)
-    enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+
+  if (!gameOver) gameCount++;
+
+  if (gameCount>=0 && gameCount<1800)
+  {
+    if(rand(0,60)==1)
+      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+  }
+
+  if (gameCount>=1800 && gameCount<3600)
+  {
+    if(rand(0,30)==1)
+      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+  }
+
+  if (gameCount>=3600 && gameCount<5400)
+  {
+    if(rand(0,15)==1)
+      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+  }
+
+  if (gameCount>=5400)
+  {
+    if(rand(0,5)==1)
+      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+  }
 
   updateAll();
   drawAll();
@@ -181,4 +209,3 @@ window.onload=function()
 {
   gameInit();
 }
-
