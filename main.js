@@ -180,6 +180,7 @@ function gameLoop()
   {
     if(rand(0,60)==1)
       enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+
   }
 
   if (gameCount>=1800 && gameCount<3600)

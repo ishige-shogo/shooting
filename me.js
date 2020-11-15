@@ -50,7 +50,7 @@ class Me
     this.speed=512;
     this.reload = 0;
     this.reload2 = 0;
-    this.r = 10;
+    this.r = 3;
     this.damage = 0;
     this.mhp=100;
     this.hp= this.mhp;
@@ -65,8 +65,10 @@ class Me
     if(key[32] && this.reload==0)
       { 
         ball.push(new Ball(this.x, this.y,0,-2000));
+        // ball.push(new Ball(this.x+10, this.y,13000,-2000));
+        // ball.push(new Ball(this.x-10, this.y,-13000,-2000));
         this.reload=4;
-        if(++this.reload2 ==4)
+        if(++this.reload2 ==5)
         {
           this.reload=20;
           this.reload2=0;

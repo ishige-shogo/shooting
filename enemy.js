@@ -42,7 +42,7 @@ class Enemy extends Char
       this.flag = false;
       // this.w = 20;
       // this.h = 20;
-      this.r = 10;
+      this.r = 40;
     }
     update()
     {
@@ -72,6 +72,7 @@ class Enemy extends Char
         if (gameOver)return;
         {
         enemy_ball.push(new Enemy_ball(4,this.x,this.y,dx,dy));
+        // enemy_ball.push(new Enemy_ball(4,this.x,this.y+100,dx,300));
         }
         
       }
