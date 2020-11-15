@@ -72,7 +72,7 @@ class Enemy extends Char
         if (gameOver)return;
         {
         enemy_ball.push(new Enemy_ball(4,this.x,this.y,dx,dy));
-        // enemy_ball.push(new Enemy_ball(4,this.x,this.y+100,dx,300));
+        // enemy_ball.push(new Enemy_ball(4,this.x,this.y+300,dx,300));
         }
         
       }

@@ -14,7 +14,6 @@ class Ball extends Char
   update()
   {
     super.update();
-    
 
     for (let i=0; i<enemy.length ;i++)
     {
@@ -46,8 +45,8 @@ class Me
   constructor()
   {
     this.x = (FIELD_W/2)<<8;
-    this.y = (FIELD_H/2)<<8;
-    this.speed=512;
+    this.y = (FIELD_H/2+100)<<8;
+    this.speed=1024;
     this.reload = 0;
     this.reload2 = 0;
     this.r = 3;
@@ -65,8 +64,14 @@ class Me
     if(key[32] && this.reload==0)
       { 
         ball.push(new Ball(this.x, this.y,0,-2000));
-        // ball.push(new Ball(this.x+10, this.y,13000,-2000));
-        // ball.push(new Ball(this.x-10, this.y,-13000,-2000));
+        // ball.push(new Ball(this.x-10, this.y,500,-2000));
+        // ball.push(new Ball(this.x-10, this.y,-500,-2000));
+        // ball.push(new Ball(this.x+10, this.y,1300,-2000));
+        // ball.push(new Ball(this.x-10, this.y,-1300,-2000));
+        // ball.push(new Ball(this.x+10, this.y,4300,-2000));
+        // ball.push(new Ball(this.x-10, this.y,-4300,-2000));
+        // ball.push(new Ball(this.x+10, this.y,8300,-2000));
+        // ball.push(new Ball(this.x-10, this.y,-8300,-2000));
         this.reload=4;
         if(++this.reload2 ==5)
         {

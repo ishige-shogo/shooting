@@ -11,8 +11,8 @@ const SMOOTHING = false;
 const GAME_SPEED = 1000/60;
 
 //screen_size
-const SCREEN_W = 640;
-const SCREEN_H = 320;
+const SCREEN_W = 320;
+const SCREEN_H = 400;
 
 //canvas_size
 const CANVAS_W = SCREEN_W *2;
@@ -112,12 +112,15 @@ function drawAll()
   if (me.hp==0)vcon.fillStyle="red";
   vcon.fillRect(camera_x,camera_y,SCREEN_W,SCREEN_H)
 
+
+
   drawObj(star);
   drawObj(ball);
   if(!gameOver)me.draw();
   drawObj(enemy_ball);
   drawObj(enemy);
-  drawObj(explosion);
+  drawObj(explosion)
+    
 
 
   camera_x = (me.x>>8)/FIELD_W * (FIELD_W-SCREEN_W);
@@ -134,18 +137,41 @@ function putInfo()
 
   if(gameOver)
   {
-
   let s="GAME OVER";
+  let w=con.measureText(s).width;
+  let x=CANVAS_W/2 - w/2;
+  let y=CANVAS_H/2+200;
+  con.fillText(s,x,y);
+  s="Score:"+ gameCount;
+  w=con.measureText(s).width;
+  x=CANVAS_W/2 - w/2;
+  y=CANVAS_H/2+200+20;
+  con.fillText(s,x,y);
+  s="Push 'R' key to restart !";
+  w=con.measureText(s).width;
+  x=CANVAS_W/2 - w/2;
+  y=CANVAS_H/2+200+40;
+  con.fillText(s,x,y);
+  }
+
+  if(gameCount>=6000)
+  {
+  let s="GAME CLEAR!";
   let w=con.measureText(s).width;
   let x=CANVAS_W/2 - w/2;
   let y=CANVAS_H/2 -20;
   con.fillText(s,x,y);
-  s="Push 'R' key to restart !";
+  s="Score:6000";
   w=con.measureText(s).width;
   x=CANVAS_W/2 - w/2;
   y=CANVAS_H/2 -20+20;
   con.fillText(s,x,y);
   }
+
+
+ 
+  
+
 
   if(DEBUG)
     {
@@ -165,6 +191,7 @@ function putInfo()
       con.fillText("Y:" + (me.y>>8),20,120);
       con.fillText("HP:" + me.hp,20,140);
       con.fillText("gameCount:" + (Math.round(gameCount/60)),20,160);
+      
 
     }
 }
@@ -174,30 +201,35 @@ let gameCount=0;
 function gameLoop()
 {
 
-  if (!gameOver) gameCount++;
+  if (!gameOver && gameCount<=6000) gameCount++;
 
-  if (gameCount>=0 && gameCount<1800)
+  if (gameCount>=0 && gameCount<1200)
   {
     if(rand(0,60)==1)
       enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
 
   }
 
-  if (gameCount>=1800 && gameCount<3600)
+  if (gameCount>=1200 && gameCount<2400)
   {
     if(rand(0,30)==1)
       enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
   }
 
-  if (gameCount>=3600 && gameCount<5400)
+  if (gameCount>=2400 && gameCount<3600)
   {
     if(rand(0,15)==1)
       enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
   }
 
-  if (gameCount>=5400)
+  if (gameCount>=3600 && gameCount<4800)
   {
     if(rand(0,5)==1)
+      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+  }
+  if (gameCount>=4800 && gameCount<6000)
+  {
+    if(rand(0,1)==1)
       enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
   }
 
