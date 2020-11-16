@@ -9,7 +9,7 @@ class Ball extends Char
     super(2,x,y,vx,vy);
     // this.w = 4;
     // this.h = 6;
-    this.r =4;
+    this.r =5;
   }
   update()
   {

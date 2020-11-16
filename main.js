@@ -168,11 +168,6 @@ function putInfo()
   con.fillText(s,x,y);
   }
 
-
- 
-  
-
-
   if(DEBUG)
     {
       drawCount++;
@@ -182,17 +177,15 @@ function putInfo()
         drawCount=0;
         lastTime=Date.now();
       }
-      
       con.fillText("FPS:" + fps,20,20);
-      con.fillText("Ball:" + ball.length,20,40);
-      con.fillText("Enemy:" + enemy.length,20,60);
-      con.fillText("Enemy_ball:" + enemy_ball.length,20,80);
-      con.fillText("X:" + (me.x>>8),20,100);
-      con.fillText("Y:" + (me.y>>8),20,120);
-      con.fillText("HP:" + me.hp,20,140);
-      con.fillText("gameCount:" + (Math.round(gameCount/60)),20,160);
-      
-
+      // con.fillText("Ball:" + ball.length,20,40);
+      // con.fillText("Enemy:" + enemy.length,20,60);
+      // con.fillText("Enemy_ball:" + enemy_ball.length,20,80);
+      // con.fillText("X:" + (me.x>>8),20,100);
+      // con.fillText("Y:" + (me.y>>8),20,120);
+      con.fillText("HP:" + me.hp,20,40);
+      con.fillText("Time:" + (Math.round(gameCount/60)),20,60);
+      if (!gameOver) {con.fillText("Score:" + gameCount,20,80);}
     }
 }
 
@@ -207,30 +200,26 @@ function gameLoop()
   {
     if(rand(0,60)==1)
       enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
-
   }
-
   if (gameCount>=1200 && gameCount<2400)
   {
     if(rand(0,30)==1)
-      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+      enemy.push(new Enemy(6, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
   }
-
   if (gameCount>=2400 && gameCount<3600)
   {
     if(rand(0,15)==1)
-      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+      enemy.push(new Enemy(9, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
   }
-
   if (gameCount>=3600 && gameCount<4800)
   {
     if(rand(0,5)==1)
-      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+      enemy.push(new Enemy(8, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
   }
   if (gameCount>=4800 && gameCount<6000)
   {
     if(rand(0,1)==1)
-      enemy.push(new Enemy(3, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
+      enemy.push(new Enemy(7, rand(0,FIELD_W)<<8, 0, 0, rand(300,1200)));
   }
 
   updateAll();
