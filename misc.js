@@ -46,7 +46,7 @@ class Star{
   }
 
   draw()
-  {   
+  {
       let x=this.x>>8;
       let y=this.y>>8;
       if( x<camera_x || x>=camera_x+SCREEN_W

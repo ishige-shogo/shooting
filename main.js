@@ -126,6 +126,17 @@ function drawAll()
   camera_x = (me.x>>8)/FIELD_W * (FIELD_W-SCREEN_W);
   camera_y = (me.y>>8)/FIELD_H * (FIELD_H-SCREEN_H);
 
+if (me.hp>0)
+{
+  let sz= (SCREEN_W-20)*me.hp/me.mhp;
+  let sz2= (SCREEN_W-20);
+  vcon.fillStyle="rgba(0,0,255,0.5)";
+  vcon.fillRect(camera_x+10,camera_y+SCREEN_H-14,sz,10);
+  vcon.strokeStyle="rgba(0,0,255,0.9)";
+  vcon.strokeRect(camera_x+10,camera_y+SCREEN_H-14,sz2,10);
+}
+
+
   con.drawImage(vcan, camera_x, camera_y, SCREEN_W, SCREEN_H,
     0,0,CANVAS_W,CANVAS_H);
 }
