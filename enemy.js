@@ -34,8 +34,6 @@ class Enemy_ball extends Char
 
 //enemy_class
 
-
-
 class Enemy extends Char
 {
     constructor(snum,x,y,vx,vy)
